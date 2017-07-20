@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Comment from '../presentation/Comment'
+import superagent from 'superagent'
 import styles from '../styles'
+import { APIManager } from '../../utils'
 
 class Comments extends Component {
     constructor(){
@@ -14,6 +16,17 @@ class Comments extends Component {
             list:[]
         }
     }   
+
+	componentDidMount(){
+        APIManager.get('/api/comment',null,(err,response)=>{
+            if(err){
+                alert('ERROR '+err.message)
+            }
+            this.setState({
+				list:response.results
+			})
+        })
+	}
 
     updateUsername(event){
         let updatedUsername = Object.assign({},this.state.comment)

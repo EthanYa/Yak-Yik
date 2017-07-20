@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Zone from '../presentation/Zone'
 import superagent from 'superagent'
+import { APIManager } from '../../utils'
 
 class Zones extends Component {
 	constructor(){
@@ -15,19 +16,13 @@ class Zones extends Component {
 	}
 
 	componentDidMount(){
-		superagent
-		.get('/api/zone')
-		.query(null)
-		.set('Accept','application/json')
-		.end((err,response)=>{
+		console.log("hihihihihi")
+		APIManager.get('/api/zone',null,(err,response)=>{
 			if(err){
-				console.log('ERROR : ' + err )
-				return
+				alert('ERROR ' + err.message)
 			}
-			// console.log(response)
-			let { results } = response.body
 			this.setState({
-				list:results
+				list:response.results
 			})
 		})
 	}
@@ -44,12 +39,27 @@ class Zones extends Component {
 	}
 
 	addZone(){
-		console.log(this.state.zone)
-		let updatedList = [...this.state.list]
-		updatedList.push(this.state.zone)
-		this.setState({
-			list:updatedList
+		let updatedZone = Object.assign({},this.state.zone)
+		updatedZone['zipCodes'] = updatedZone.zipCode.split(',')
+
+		APIManager.post('/api/zone',updatedZone,(err,response)=>{
+			if(err){
+				alert('ERROR '+err.message)
+				return
+			}
+			let updatedList = [...this.state.list]
+			updatedList.push(response.result)
+			this.setState({
+				list: updatedList
+			})
 		})
+
+		// console.log(this.state.zone)
+		// let updatedList = [...this.state.list]
+		// updatedList.push(this.state.zone)
+		// this.setState({
+		// 	list:updatedList
+		// })
 	}
 
 	render(){

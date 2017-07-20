@@ -20,14 +20,14 @@ module.exports = {
         })
     },
     create: (params, callback) => {
-        let zips = params['zipCodes']
-        let zip = zips.split(',')
-        let newZips = []
-        zip.forEach((zipCode) => {
-            newZips.push(zipCode.trim())
-        })
+        // let zips = params['zipCodes']
+        // let zip = zips.split(',')
+        // let newZips = []
+        // zip.forEach((zipCode) => {
+        //     newZips.push(zipCode.trim())
+        // })
 
-        params['zipCodes'] = newZips
+        // params['zipCodes'] = newZips
 
         Zone.create(params, (err, zone) => {
             if (err) {
