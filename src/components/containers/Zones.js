@@ -1,16 +1,13 @@
 import React, { Component } from 'react'
-import Zone from '../presentation/Zone'
+import { Zone ,CreateZone} from '../presentation'
 import superagent from 'superagent'
 import { APIManager } from '../../utils'
 
 class Zones extends Component {
+
 	constructor(){
 		super()
 		this.state = {
-			zone:{
-				name:'',
-				zipCode:''
-			},
 			list:[]
 		}
 	}
@@ -28,19 +25,18 @@ class Zones extends Component {
 	}
 
 	//聰明寫法
-	updateZone(event){
-		let { id ,value } = event.target
-		let updatedZone = Object.assign({},this.state.zone)
-		updatedZone[id] = value
-		this.setState({
-			zone:updatedZone
-		})
+	// updateZone(event){
+	// 	let { id ,value } = event.target
+	// 	let updatedZone = Object.assign({},this.state.zone)
+	// 	updatedZone[id] = value
+	// 	this.setState({
+	// 		zone:updatedZone
+	// 	})
 
-	}
+	// }
 
-	addZone(){
-		let updatedZone = Object.assign({},this.state.zone)
-		updatedZone['zipCodes'] = updatedZone.zipCode.split(',')
+	addZone(zone){
+		let updatedZone = Object.assign({},zone)
 
 		APIManager.post('/api/zone',updatedZone,(err,response)=>{
 			if(err){
@@ -77,9 +73,7 @@ class Zones extends Component {
 						})
 					}
 				</ol> 
-				<input id="name" onChange={this.updateZone.bind(this)} className="form-control"type="text" placeholder="Name" />
-                <input id="zipCode" onChange={this.updateZone.bind(this)} className="form-control"type="text" placeholder="ZipCode" />
-                <button onClick={this.addZone.bind(this)} className="btn btn-danger">Submit Comment</button>
+				<CreateZone onCreate={this.addZone.bind(this)}/>
 			</div>
 		)
 	}
