@@ -10743,7 +10743,7 @@ exports.default = {
             marginTop: 0,
             marginBottom: 0
         },
-        tittle: {
+        title: {
             textDecoration: 'none',
             color: 'red'
         }
@@ -23566,6 +23566,7 @@ var Zones = function (_Component) {
 		var _this = _possibleConstructorReturn(this, (Zones.__proto__ || Object.getPrototypeOf(Zones)).call(this));
 
 		_this.state = {
+			selected: 0,
 			list: []
 		};
 		return _this;
@@ -23625,8 +23626,17 @@ var Zones = function (_Component) {
 			// })
 		}
 	}, {
+		key: 'selectZone',
+		value: function selectZone(index) {
+			this.setState({
+				selected: index
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var _this4 = this;
+
 			var list = this.state.list;
 
 			return _react2.default.createElement(
@@ -23636,10 +23646,11 @@ var Zones = function (_Component) {
 					'ol',
 					null,
 					list.map(function (zone, i) {
+						var selected = i == _this4.state.selected;
 						return _react2.default.createElement(
 							'li',
 							{ key: i },
-							_react2.default.createElement(_presentation.Zone, { currentZone: zone, key: i })
+							_react2.default.createElement(_presentation.Zone, { index: i, select: _this4.selectZone.bind(_this4), isSelected: selected, currentZone: zone })
 						);
 					})
 				),
@@ -23692,22 +23703,35 @@ var Zone = function (_Component) {
 	}
 
 	_createClass(Zone, [{
+		key: 'onSelectTitle',
+		value: function onSelectTitle(event) {
+			event.preventDefault();
+			this.props.select(this.props.index);
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var zone = _styles2.default.zone;
-			var currentZone = this.props.currentZone;
+			var _props = this.props,
+			    currentZone = _props.currentZone,
+			    isSelected = _props.isSelected;
 
+			var title = isSelected ? _react2.default.createElement(
+				'a',
+				{ style: zone.title, href: '#' },
+				currentZone.name
+			) : _react2.default.createElement(
+				'a',
+				{ href: '#' },
+				currentZone.name
+			);
 			return _react2.default.createElement(
 				'div',
 				{ style: zone.container },
 				_react2.default.createElement(
 					'h2',
-					{ style: zone.header },
-					_react2.default.createElement(
-						'a',
-						{ style: zone.tittle, href: '#' },
-						currentZone.name
-					)
+					{ onClick: this.onSelectTitle.bind(this), style: zone.header },
+					title
 				),
 				_react2.default.createElement(
 					'span',

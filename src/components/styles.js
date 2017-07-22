@@ -23,7 +23,7 @@ export default {
             marginTop: 0,
             marginBottom: 0
         },
-        tittle: {
+        title: {
             textDecoration: 'none',
             color: 'red'
         }
